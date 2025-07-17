@@ -49,6 +49,8 @@ const useParticles = (count: number) => {
       animationDuration: `${Math.random() * 50 + 50}s`,
       animationDelay: `-${Math.random() * 100}s`,
       size: Math.random() * 2.5 + 1,
+      randomX: Math.random() * 400 - 200,
+      randomY: Math.random() * 400 - 200,
     }));
     setParticles(newParticles);
   }, [count]);
@@ -88,7 +90,7 @@ const ShootingStarsAnimation = () => {
                         height: `${star.size}px`,
                         animationDelay: `${Math.random() * 10}s`,
                         animationDuration: `${Math.random() * 2 + 1}s`,
-                        opacity: Math.random() * 0.5 + 0.5
+                        opacity: Math.random() * 0.7 + 0.5
                     }}
                 ></div>
             ))}
@@ -117,19 +119,16 @@ const GentleParticlesAnimation = () => {
                         top: p.top,
                         animation: `particle-drift ${p.animationDuration} linear infinite`,
                         animationDelay: p.animationDelay,
-                    }}
+                        '--random-x': `${p.randomX}px`,
+                        '--random-y': `${p.randomY}px`,
+                    } as React.CSSProperties}
                 />
             ))}
             <style jsx>{`
                 @keyframes particle-drift {
                     from { transform: translate(0, 0) rotate(0deg); }
-                    50% { transform: translate(calc(var(--random-x) * 1px), calc(var(--random-y) * 1px)) rotate(180deg); opacity: 0.7; }
+                    50% { transform: translate(var(--random-x), var(--random-y)) rotate(180deg); opacity: 0.7; }
                     to { transform: translate(0, 0) rotate(360deg); }
-                }
-
-                div > div {
-                    --random-x: ${Math.random() * 400 - 200};
-                    --random-y: ${Math.random() * 400 - 200};
                 }
             `}</style>
         </div>
@@ -175,7 +174,9 @@ const FloatingIconsAnimation = () => {
               top: icon.top,
               animation: `particle-drift ${icon.animationDuration} linear infinite`,
               animationDelay: icon.animationDelay,
-            }}
+              '--random-x': `${icon.randomX}px`,
+              '--random-y': `${icon.randomY}px`,
+            } as React.CSSProperties}
           >
             <IconComponent style={{ width: `${icon.size * 10}px`, height: `${icon.size * 10}px` }}/>
           </div>
@@ -184,12 +185,8 @@ const FloatingIconsAnimation = () => {
        <style jsx>{`
             @keyframes particle-drift {
                 from { transform: translate(0, 0) rotate(0deg); }
-                50% { transform: translate(calc(var(--random-x) * 1px), calc(var(--random-y) * 1px)) rotate(180deg); opacity: 0.5; }
+                50% { transform: translate(var(--random-x), var(--random-y)) rotate(180deg); opacity: 0.5; }
                 to { transform: translate(0, 0) rotate(360deg); }
-            }
-            div > div {
-                --random-x: ${Math.random() * 400 - 200};
-                --random-y: ${Math.random() * 400 - 200};
             }
         `}</style>
     </div>
