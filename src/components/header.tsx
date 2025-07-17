@@ -2,11 +2,13 @@
 
 import { Input } from './ui/input';
 import { Button } from './ui/button';
-import { PlusCircle, Search, Palette } from 'lucide-react';
+import { PlusCircle, Search, Palette, SparklesIcon } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
 import { Icons } from './icons';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 import type { Theme } from '@/lib/types';
+import { Switch } from './ui/switch';
+import { Label } from './ui/label';
 
 interface AppHeaderProps {
   searchQuery: string;
@@ -14,9 +16,11 @@ interface AppHeaderProps {
   onAddNew: () => void;
   themes: Theme[];
   setTheme: (theme: Theme) => void;
+  showAnimations: boolean;
+  setShowAnimations: (show: boolean) => void;
 }
 
-export function AppHeader({ searchQuery, setSearchQuery, onAddNew, themes, setTheme }: AppHeaderProps) {
+export function AppHeader({ searchQuery, setSearchQuery, onAddNew, themes, setTheme, showAnimations, setShowAnimations }: AppHeaderProps) {
   return (
     <header className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
       <div className="flex items-center gap-3">
@@ -25,7 +29,7 @@ export function AppHeader({ searchQuery, setSearchQuery, onAddNew, themes, setTh
           FluxLink
         </h1>
       </div>
-      <div className="flex items-center gap-2 w-full md:w-auto">
+      <div className="flex items-center gap-2 md:gap-4 w-full md:w-auto">
         <div className="relative flex-grow md:w-64">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
@@ -40,6 +44,16 @@ export function AppHeader({ searchQuery, setSearchQuery, onAddNew, themes, setTh
           <PlusCircle className="mr-2 h-4 w-4" />
           Add New
         </Button>
+        <div className="flex items-center gap-2">
+            <Label htmlFor="animation-switch" className="flex items-center gap-2 cursor-pointer">
+              <SparklesIcon className="h-[1.2rem] w-[1.2rem] text-muted-foreground" />
+              <Switch 
+                id="animation-switch"
+                checked={showAnimations}
+                onCheckedChange={setShowAnimations}
+              />
+            </Label>
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon">

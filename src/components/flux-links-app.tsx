@@ -10,10 +10,11 @@ import { ShortcutCard } from '@/components/shortcut-card';
 import { ShortcutDialog } from '@/components/shortcut-dialog';
 import { Button } from './ui/button';
 import { PlusCircle } from 'lucide-react';
+import { AnimatedBackground } from './animated-background';
 
 export function FluxLinksApp() {
-  const [shortcuts, setShortcuts] = useLocalStorage<Shortcut[]>('shortcuts-v4', DEFAULT_SHORTCUTS);
-  const [categories, setCategories] = useLocalStorage<Category[]>('categories-v4', DEFAULT_CATEGORIES);
+  const [shortcuts, setShortcuts] = useLocalStorage<Shortcut[]>('shortcuts-v5', DEFAULT_SHORTCUTS);
+  const [categories, setCategories] = useLocalStorage<Category[]>('categories-v5', DEFAULT_CATEGORIES);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
@@ -21,6 +22,7 @@ export function FluxLinksApp() {
   const [isShortcutDialogOpen, setIsShortcutDialogOpen] = useState(false);
   const [draggedItem, setDraggedItem] = useState<Shortcut | null>(null);
   const [theme, setTheme] = useState<Theme>(THEMES[0]);
+  const [showAnimations, setShowAnimations] = useLocalStorage('show-animations', true);
   
   const [visibleShortcuts, setVisibleShortcuts] = useState<Shortcut[]>([]);
 
@@ -97,83 +99,88 @@ export function FluxLinksApp() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8" data-theme={theme.value}>
-      <AppHeader
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        onAddNew={openNewShortcutDialog}
-        themes={THEMES}
-        setTheme={setTheme}
-      />
+    <div className="relative min-h-screen">
+      {showAnimations && <AnimatedBackground />}
+      <div className="relative z-10 container mx-auto px-4 py-8 max-w-screen-2xl" data-theme={theme.value}>
+        <AppHeader
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          onAddNew={openNewShortcutDialog}
+          themes={THEMES}
+          setTheme={setTheme}
+          showAnimations={showAnimations}
+          setShowAnimations={setShowAnimations}
+        />
 
-      <CategoryTabs
-        categories={categories}
-        setCategories={setCategories}
-        activeCategoryId={activeCategoryId}
-        setActiveCategoryId={setActiveCategoryId}
-        shortcuts={shortcuts}
-        setShortcuts={setShortcuts}
-      />
+        <CategoryTabs
+          categories={categories}
+          setCategories={setCategories}
+          activeCategoryId={activeCategoryId}
+          setActiveCategoryId={setActiveCategoryId}
+          shortcuts={shortcuts}
+          setShortcuts={setShortcuts}
+        />
 
-      {visibleShortcuts.length > 0 ? (
-        <div 
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 py-8"
-            onDragOver={handleDragOver}
-        >
-          {visibleShortcuts.map((shortcut, index) => (
-            <div 
-                key={shortcut.id}
-                draggable
-                onDragStart={(e) => handleDragStart(e, shortcut)}
-                onDrop={(e) => handleDrop(e, shortcut)}
-                onDragEnd={handleDragEnd}
-                className={`transition-opacity duration-300 ${draggedItem?.id === shortcut.id ? 'opacity-50' : 'opacity-100'}`}
-                style={{
-                  transition: 'opacity 300ms ease-in-out, transform 300ms ease-in-out',
-                  animation: `fadeInUp 0.5s ${index * 0.05}s ease-out forwards`,
-                  opacity: 0,
-                }}
-            >
-                <ShortcutCard
-                  shortcut={shortcut}
-                  onEdit={() => handleEditShortcut(shortcut)}
-                  onDelete={() => handleDeleteShortcut(shortcut.id)}
-                  isDragging={draggedItem?.id === shortcut.id}
-                />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center text-center py-20">
-          <h3 className="font-headline text-2xl font-medium text-muted-foreground">No shortcuts found</h3>
-          <p className="text-muted-foreground mt-2">Try adjusting your search or filters.</p>
-           <Button onClick={openNewShortcutDialog} className="mt-6">
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Add Your First Shortcut
-          </Button>
-        </div>
-      )}
-      
-      <ShortcutDialog
-        isOpen={isShortcutDialogOpen}
-        setIsOpen={setIsShortcutDialogOpen}
-        onSave={handleSaveShortcut}
-        shortcut={editingShortcut}
-        categories={categories}
-      />
+        {visibleShortcuts.length > 0 ? (
+          <div 
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6 py-8"
+              onDragOver={handleDragOver}
+          >
+            {visibleShortcuts.map((shortcut, index) => (
+              <div 
+                  key={shortcut.id}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, shortcut)}
+                  onDrop={(e) => handleDrop(e, shortcut)}
+                  onDragEnd={handleDragEnd}
+                  className={`transition-opacity duration-300 ${draggedItem?.id === shortcut.id ? 'opacity-50' : 'opacity-100'}`}
+                  style={{
+                    transition: 'opacity 300ms ease-in-out, transform 300ms ease-in-out',
+                    animation: `fadeInUp 0.5s ${index * 0.05}s ease-out forwards`,
+                    opacity: 0,
+                  }}
+              >
+                  <ShortcutCard
+                    shortcut={shortcut}
+                    onEdit={() => handleEditShortcut(shortcut)}
+                    onDelete={() => handleDeleteShortcut(shortcut.id)}
+                    isDragging={draggedItem?.id === shortcut.id}
+                  />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center text-center py-20">
+            <h3 className="font-headline text-2xl font-medium text-muted-foreground">No shortcuts found</h3>
+            <p className="text-muted-foreground mt-2">Try adjusting your search or filters.</p>
+            <Button onClick={openNewShortcutDialog} className="mt-6">
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Add Your First Shortcut
+            </Button>
+          </div>
+        )}
+        
+        <ShortcutDialog
+          isOpen={isShortcutDialogOpen}
+          setIsOpen={setIsShortcutDialogOpen}
+          onSave={handleSaveShortcut}
+          shortcut={editingShortcut}
+          categories={categories}
+        />
 
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
+        <style jsx>{`
+          @keyframes fadeInUp {
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
           }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
+        `}</style>
+      </div>
     </div>
   );
 }
