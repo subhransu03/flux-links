@@ -1,4 +1,4 @@
-import type { Category, Shortcut, Theme } from './types';
+import type { Category, Shortcut, Theme, Animation } from './types';
 
 export const THEMES: Theme[] = [
     { name: 'Default', value: 'default' },
@@ -12,6 +12,16 @@ export const THEMES: Theme[] = [
     { name: 'Cyberpunk', value: 'cyberpunk' },
     { name: 'Minimalist', value: 'minimalist' },
 ];
+
+export const ANIMATIONS: Animation[] = [
+  { name: 'Off', value: 'off' },
+  { name: 'Floating Tech', value: 'floating-tech' },
+  { name: 'Floating UI', value: 'floating-ui' },
+  { name: 'Matrix', value: 'matrix' },
+  { name: 'Bubbles', value: 'bubbles' },
+  // { name: 'Constellation', value: 'constellation' }, // Canvas-based, more complex
+];
+
 
 export const DEFAULT_CATEGORIES: Category[] = [
   { id: 'cat-1', name: 'Job Portals' },
@@ -167,7 +177,7 @@ export const DEFAULT_SHORTCUTS: Shortcut[] = [
   { id: 'sc-140', name: 'Cleanup.pictures', url: 'https://cleanup.pictures', categoryId: 'cat-7' },
   { id: 'sc-141', name: 'Scribe AI', url: 'https://scribehow.com', categoryId: 'cat-7' },
   { id: 'sc-142', name: 'Fireflies AI', url: 'https://fireflies.ai', categoryId: 'cat-7' },
-  { id: 'sc-143', name: 'Eightify', url: 'https://eightify.app', categoryId: 'cat-7' },
+  { id: 'sc-143 name: 'Eightify', url: 'https://eightify.app', categoryId: 'cat-7' },
   { id: 'sc-144', name: 'Magical AI', url: 'https://magical.so', categoryId: 'cat-7' },
   { id: 'sc-145', name: 'Image Resizer', url: 'https://imageresizer.com', categoryId: 'cat-8' },
   { id: 'sc-146', name: 'ResizeImage.net', url: 'https://resizeimage.net', categoryId: 'cat-8' },

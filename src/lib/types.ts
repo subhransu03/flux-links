@@ -15,3 +15,8 @@ export interface Theme {
   name: string;
   value: string;
 }
+
+export interface Animation {
+  name: string;
+  value: 'off' | 'floating-tech' | 'floating-ui' | 'matrix' | 'bubbles' | 'constellation';
+}
