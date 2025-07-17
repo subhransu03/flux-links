@@ -12,8 +12,8 @@ import { Button } from './ui/button';
 import { PlusCircle } from 'lucide-react';
 
 export function FluxLinksApp() {
-  const [shortcuts, setShortcuts] = useLocalStorage<Shortcut[]>('shortcuts', DEFAULT_SHORTCUTS);
-  const [categories, setCategories] = useLocalStorage<Category[]>('categories', DEFAULT_CATEGORIES);
+  const [shortcuts, setShortcuts] = useLocalStorage<Shortcut[]>('shortcuts-v2', DEFAULT_SHORTCUTS);
+  const [categories, setCategories] = useLocalStorage<Category[]>('categories-v2', DEFAULT_CATEGORIES);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);

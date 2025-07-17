@@ -35,11 +35,10 @@ export function ShortcutCard({ shortcut, onEdit, onDelete }: ShortcutCardProps) 
   };
 
   return (
-    <Card className="group relative overflow-hidden bg-card/50 backdrop-blur-sm border-border/20 hover:border-primary/50 transition-all duration-300 ease-in-out transform hover:-translate-y-1">
+    <Card className="group relative overflow-hidden bg-card/80 backdrop-blur-sm border-border/60 hover:border-primary/50 transition-all duration-300 ease-in-out transform hover:-translate-y-1 shadow-lg hover:shadow-primary/20">
       <a href={shortcut.url} target="_blank" rel="noopener noreferrer" className="block p-4">
         <CardContent className="flex flex-col items-center justify-center gap-4 text-center p-0">
-          <div className="relative h-16 w-16 flex items-center justify-center rounded-lg bg-secondary group-hover:bg-primary/20 transition-colors">
-            <div className="absolute inset-0 rounded-lg animate-glow group-hover:animate-none" />
+          <div className="relative h-16 w-16 flex items-center justify-center rounded-lg bg-secondary/70 group-hover:bg-primary/20 transition-colors">
             <Image
               src={getFaviconUrl(shortcut.url)}
               alt={`${shortcut.name} favicon`}

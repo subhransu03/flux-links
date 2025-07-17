@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { cn } from '@/lib/utils';
 
 export const AnimatedBackground = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -22,7 +21,7 @@ export const AnimatedBackground = () => {
       {particles.map((_, i) => (
         <div
           key={i}
-          className="absolute rounded-full bg-primary/20"
+          className="absolute rounded-full bg-primary/10"
           style={{
             width: `${Math.random() * 3 + 1}px`,
             height: `${Math.random() * 3 + 1}px`,
@@ -34,7 +33,7 @@ export const AnimatedBackground = () => {
           }}
         />
       ))}
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-background/80 via-transparent to-background/80" />
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-background via-background/50 to-background" />
       <style jsx>{`
         @keyframes move {
           0% {
