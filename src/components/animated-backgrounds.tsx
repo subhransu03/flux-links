@@ -90,7 +90,6 @@ const ShootingStarsAnimation = () => {
                         height: `${star.size}px`,
                         animationDelay: `${Math.random() * 10}s`,
                         animationDuration: `${Math.random() * 2 + 1}s`,
-                        opacity: Math.random() * 0.8 + 0.8
                     }}
                 ></div>
             ))}
@@ -100,9 +99,10 @@ const ShootingStarsAnimation = () => {
                     to { transform: translateY(100vh) translateX(-100vw) scale(0.5); opacity: 0; }
                 }
                 .animate-star-fall {
-                  animation-name: star-fall;
-                  animation-timing-function: linear;
-                  animation-iteration-count: infinite;
+                    animation-name: star-fall;
+                    animation-timing-function: linear;
+                    animation-iteration-count: infinite;
+                    opacity: 0.9;
                 }
             `}</style>
         </div>
@@ -233,4 +233,5 @@ const MatrixRainAnimation = () => {
       </div>
     );
 };
+
 
