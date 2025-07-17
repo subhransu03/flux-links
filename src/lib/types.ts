@@ -19,5 +19,5 @@ export interface Theme {
 
 export interface Animation {
   name: string;
-  value: 'off' | 'gradient' | 'particles' | 'spotlight' | 'lines' | 'polka';
+  value: 'off' | 'gradient' | 'particles' | 'spotlight' | 'lines' | 'polka' | 'cubes';
 }

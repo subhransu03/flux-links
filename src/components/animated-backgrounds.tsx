@@ -44,6 +44,7 @@ export const AnimatedBackgrounds = ({ animation }: AnimatedBackgroundsProps) => 
     'spotlight': InteractiveSpotlightAnimation,
     'lines': MovingLinesAnimation,
     'polka': PolkaDotAnimation,
+    'cubes': FloatingCubesAnimation,
   }[animation.value];
 
   return (
@@ -180,3 +181,70 @@ const PolkaDotAnimation = () => (
       `}</style>
     </div>
 );
+
+const FloatingCubesAnimation = () => {
+  const cubes = useParticles(15);
+  return (
+    <div className="w-full h-full perspective-[1000px]">
+      {cubes.map((cube, i) => (
+        <div
+          key={i}
+          className="absolute"
+          style={{
+            left: cube.left,
+            top: cube.top,
+            transformStyle: 'preserve-3d',
+            animation: `cube-float ${cube.animationDuration} linear infinite`,
+            animationDelay: cube.animationDelay,
+          }}
+        >
+          <div
+            className="cube"
+            style={{
+              animation: `cube-rotate ${Math.random() * 10 + 10}s linear infinite alternate`,
+              animationDelay: `-${Math.random() * 5}s`
+            }}
+          >
+            <div className="face front"></div>
+            <div className="face back"></div>
+            <div className="face right"></div>
+            <div className="face left"></div>
+            <div className="face top"></div>
+            <div className="face bottom"></div>
+          </div>
+        </div>
+      ))}
+      <style jsx>{`
+        .cube {
+          position: relative;
+          width: 40px;
+          height: 40px;
+          transform-style: preserve-3d;
+        }
+        .face {
+          position: absolute;
+          width: 40px;
+          height: 40px;
+          border: 1px solid hsl(var(--primary) / 0.8);
+          background: hsl(var(--primary) / 0.2);
+        }
+        .front  { transform: translateZ(20px); }
+        .back   { transform: rotateY(180deg) translateZ(20px); }
+        .right  { transform: rotateY(90deg) translateZ(20px); }
+        .left   { transform: rotateY(-90deg) translateZ(20px); }
+        .top    { transform: rotateX(90deg) translateZ(20px); }
+        .bottom { transform: rotateX(-90deg) translateZ(20px); }
+
+        @keyframes cube-rotate {
+          from { transform: rotateY(0deg) rotateX(0deg); }
+          to   { transform: rotateY(360deg) rotateX(360deg); }
+        }
+        @keyframes cube-float {
+            0% { transform: translateZ(0px) translateY(0px); opacity: 0.8; }
+            50% { transform: translateZ(100px) translateY(-50px); opacity: 0.2; }
+            100% { transform: translateZ(0px) translateY(0px); opacity: 0.8; }
+        }
+      `}</style>
+    </div>
+  );
+};

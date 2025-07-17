@@ -21,6 +21,7 @@ export const ANIMATIONS: Animation[] = [
   { name: 'Interactive Spotlight', value: 'spotlight' },
   { name: 'Moving Lines', value: 'lines' },
   { name: 'Polka Dots', value: 'polka' },
+  { name: 'Floating Cubes', value: 'cubes' },
 ];
 
 
