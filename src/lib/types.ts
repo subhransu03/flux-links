@@ -5,6 +5,7 @@ export interface Shortcut {
   url: string;
   categoryId: string;
   iconUrl?: string;
+  clickCount?: number;
 }
 
 export interface Category {
@@ -20,4 +21,11 @@ export interface Theme {
 export interface Animation {
   name: string;
   value: 'off' | 'gradient' | 'particles' | 'spotlight' | 'lines' | 'polka' | 'cubes';
+}
+
+export type CardSize = 'sm' | 'md' | 'lg';
+
+export interface ExportData {
+  shortcuts: Shortcut[];
+  categories: Category[];
 }

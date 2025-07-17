@@ -1,8 +1,9 @@
+
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import { useLocalStorage } from '@/hooks/use-local-storage';
-import type { Category, Shortcut, Theme, Animation } from '@/lib/types';
+import type { Category, Shortcut, Theme, Animation, CardSize } from '@/lib/types';
 import { DEFAULT_CATEGORIES, DEFAULT_SHORTCUTS, THEMES, ANIMATIONS } from '@/lib/data';
 import { AppHeader } from '@/components/header';
 import { CategoryTabs } from '@/components/category-tabs';
@@ -11,10 +12,12 @@ import { ShortcutDialog } from '@/components/shortcut-dialog';
 import { Button } from './ui/button';
 import { PlusCircle } from 'lucide-react';
 import { AnimatedBackgrounds } from './animated-backgrounds';
+import { cn } from '@/lib/utils';
 
 export function FluxLinksApp() {
-  const [shortcuts, setShortcuts] = useLocalStorage<Shortcut[]>('shortcuts-v6', DEFAULT_SHORTCUTS);
-  const [categories, setCategories] = useLocalStorage<Category[]>('categories-v6', DEFAULT_CATEGORIES);
+  const [shortcuts, setShortcuts] = useLocalStorage<Shortcut[]>('shortcuts-v7', DEFAULT_SHORTCUTS);
+  const [categories, setCategories] = useLocalStorage<Category[]>('categories-v7', DEFAULT_CATEGORIES);
+  const [cardSize, setCardSize] = useLocalStorage<CardSize>('card-size-v7', 'md');
 
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
@@ -22,7 +25,7 @@ export function FluxLinksApp() {
   const [isShortcutDialogOpen, setIsShortcutDialogOpen] = useState(false);
   const [draggedItem, setDraggedItem] = useState<Shortcut | null>(null);
   const [theme, setTheme] = useState<Theme>(THEMES[0]);
-  const [activeAnimation, setActiveAnimation] = useLocalStorage<Animation>('active-animation', ANIMATIONS[0]);
+  const [activeAnimation, setActiveAnimation] = useLocalStorage<Animation>('active-animation-v7', ANIMATIONS[0]);
 
   const [visibleShortcuts, setVisibleShortcuts] = useState<Shortcut[]>([]);
 
@@ -45,9 +48,13 @@ export function FluxLinksApp() {
     if (editingShortcut) {
       setShortcuts(prev => prev.map(s => (s.id === shortcut.id ? shortcut : s)));
     } else {
-      setShortcuts(prev => [...prev, shortcut]);
+      setShortcuts(prev => [...prev, { ...shortcut, clickCount: 0 }]);
     }
     setEditingShortcut(null);
+  };
+  
+  const handleShortcutClick = (shortcutId: string) => {
+    setShortcuts(prev => prev.map(s => s.id === shortcutId ? { ...s, clickCount: (s.clickCount || 0) + 1 } : s));
   };
 
   const handleDeleteShortcut = (id: string) => {
@@ -69,11 +76,20 @@ export function FluxLinksApp() {
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', shortcut.id);
   };
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  
+  const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
-  };
+    const target = e.currentTarget as HTMLDivElement;
+    if (target.dataset.droppable) {
+      target.classList.add('bg-primary/10');
+    }
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    const target = e.currentTarget as HTMLDivElement;
+    target.classList.remove('bg-primary/10');
+  }, []);
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetShortcut: Shortcut) => {
     e.preventDefault();
@@ -91,11 +107,18 @@ export function FluxLinksApp() {
     currentItems.splice(targetIndex, 0, reorderedItem);
 
     setShortcuts(currentItems);
-    setDraggedItem(null);
+    const targetElement = e.currentTarget as HTMLDivElement;
+    targetElement.classList.remove('bg-primary/10');
   };
 
   const handleDragEnd = () => {
     setDraggedItem(null);
+  };
+  
+  const gridClasses = {
+    sm: 'grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 2xl:grid-cols-10',
+    md: 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7',
+    lg: 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6',
   };
 
   return (
@@ -111,6 +134,7 @@ export function FluxLinksApp() {
           animations={ANIMATIONS}
           activeAnimation={activeAnimation}
           setActiveAnimation={setActiveAnimation}
+          setCardSize={setCardSize}
         />
 
         <CategoryTabs
@@ -124,19 +148,21 @@ export function FluxLinksApp() {
 
         {visibleShortcuts.length > 0 ? (
           <div
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-6 py-8"
-            onDragOver={handleDragOver}
+            className={cn("grid gap-4 sm:gap-6 py-8", gridClasses[cardSize])}
           >
             {visibleShortcuts.map((shortcut, index) => (
               <div
                 key={shortcut.id}
                 draggable
                 onDragStart={(e) => handleDragStart(e, shortcut)}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
                 onDrop={(e) => handleDrop(e, shortcut)}
                 onDragEnd={handleDragEnd}
-                className={`transition-opacity duration-300 ${draggedItem?.id === shortcut.id ? 'opacity-50' : 'opacity-100'}`}
+                data-droppable="true"
+                className="rounded-lg transition-all duration-300"
                 style={{
-                  transition: 'opacity 300ms ease-in-out, transform 300ms ease-in-out',
+                  transition: 'transform 300ms ease-in-out, opacity 300ms ease-in-out',
                   animation: `fadeInUp 0.5s ${index * 0.05}s ease-out forwards`,
                   opacity: 0,
                 }}
@@ -145,6 +171,7 @@ export function FluxLinksApp() {
                   shortcut={shortcut}
                   onEdit={() => handleEditShortcut(shortcut)}
                   onDelete={() => handleDeleteShortcut(shortcut.id)}
+                  onClick={() => handleShortcutClick(shortcut.id)}
                   isDragging={draggedItem?.id === shortcut.id}
                 />
               </div>
