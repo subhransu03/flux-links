@@ -1,3 +1,4 @@
+
 import type { Category, Shortcut, Theme, Animation } from './types';
 
 export const THEMES: Theme[] = [
@@ -15,7 +16,9 @@ export const THEMES: Theme[] = [
 
 export const ANIMATIONS: Animation[] = [
   { name: 'Off', value: 'off' },
-  { name: 'Aurora', value: 'aurora' },
+  { name: 'Moving Gradient', value: 'gradient' },
+  { name: 'Shooting Stars', value: 'stars' },
+  { name: 'Waving Lines', value: 'waves' },
   { name: 'Gentle Particles', value: 'particles' },
   { name: 'Subtle Grid', value: 'grid' },
 ];

@@ -1,3 +1,4 @@
+
 export interface Shortcut {
   id: string;
   name: string;
@@ -18,5 +19,5 @@ export interface Theme {
 
 export interface Animation {
   name: string;
-  value: 'off' | 'aurora' | 'particles' | 'grid';
+  value: 'off' | 'gradient' | 'stars' | 'waves' | 'particles' | 'grid';
 }
