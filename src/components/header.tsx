@@ -5,7 +5,6 @@ import { Button } from './ui/button';
 import { PlusCircle, Search } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
 import { Icons } from './icons';
-import { ThemeSwitcher } from './theme-switcher';
 
 interface AppHeaderProps {
   searchQuery: string;
@@ -37,7 +36,6 @@ export function AppHeader({ searchQuery, setSearchQuery, onAddNew }: AppHeaderPr
           <PlusCircle className="mr-2 h-4 w-4" />
           Add New
         </Button>
-        <ThemeSwitcher />
         <ThemeToggle />
       </div>
     </header>
