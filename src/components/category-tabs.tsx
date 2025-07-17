@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Input } from './ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from './ui/alert-dialog';
+import { ScrollArea } from './ui/scroll-area';
 
 interface CategoryTabsProps {
   categories: Category[];
@@ -64,17 +65,19 @@ export function CategoryTabs({ categories, setCategories, activeCategoryId, setA
   return (
     <>
       <div className="flex items-center gap-2">
-        <Tabs value={activeCategoryId || 'all'} onValueChange={(value) => setActiveCategoryId(value === 'all' ? null : value)}>
-          <TabsList>
-            <TabsTrigger value="all">All</TabsTrigger>
-            {categories.map((category) => (
-              <TabsTrigger key={category.id} value={category.id}>
-                {category.name}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
-        <Button variant="outline" size="sm" onClick={() => setIsManagerOpen(true)}>
+        <ScrollArea className="w-full whitespace-nowrap rounded-md">
+          <Tabs value={activeCategoryId || 'all'} onValueChange={(value) => setActiveCategoryId(value === 'all' ? null : value)} className="w-full">
+            <TabsList>
+              <TabsTrigger value="all">All</TabsTrigger>
+              {categories.map((category) => (
+                <TabsTrigger key={category.id} value={category.id}>
+                  {category.name}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+        </ScrollArea>
+        <Button variant="outline" size="sm" onClick={() => setIsManagerOpen(true)} className="flex-shrink-0">
           <ListPlus className="h-4 w-4" />
           <span className="ml-2 hidden sm:inline">Manage Categories</span>
         </Button>

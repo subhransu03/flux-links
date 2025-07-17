@@ -41,6 +41,7 @@ const formSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   url: z.string().url('Must be a valid URL'),
   categoryId: z.string().min(1, 'Category is required'),
+  iconUrl: z.string().url('Must be a valid URL').optional().or(z.literal('')),
 });
 
 export function ShortcutDialog({ isOpen, setIsOpen, onSave, shortcut, categories }: ShortcutDialogProps) {
@@ -54,6 +55,7 @@ export function ShortcutDialog({ isOpen, setIsOpen, onSave, shortcut, categories
       name: '',
       url: '',
       categoryId: '',
+      iconUrl: '',
     },
   });
   
@@ -65,12 +67,14 @@ export function ShortcutDialog({ isOpen, setIsOpen, onSave, shortcut, categories
         name: shortcut.name,
         url: shortcut.url,
         categoryId: shortcut.categoryId,
+        iconUrl: shortcut.iconUrl || '',
       });
     } else {
       form.reset({
         name: '',
         url: '',
         categoryId: '',
+        iconUrl: '',
       });
     }
     setSuggestedCategories([]);
@@ -155,6 +159,19 @@ export function ShortcutDialog({ isOpen, setIsOpen, onSave, shortcut, categories
                   <FormLabel>URL</FormLabel>
                   <FormControl>
                     <Input placeholder="https://..." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="iconUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Icon URL (Optional)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="https://.../icon.png" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
