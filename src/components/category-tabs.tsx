@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Input } from './ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from './ui/alert-dialog';
-import { ScrollArea } from './ui/scroll-area';
+import { ScrollArea, ScrollBar } from './ui/scroll-area';
 
 interface CategoryTabsProps {
   categories: Category[];
@@ -65,17 +65,18 @@ export function CategoryTabs({ categories, setCategories, activeCategoryId, setA
   return (
     <>
       <div className="flex items-center gap-2">
-        <ScrollArea className="w-full whitespace-nowrap rounded-md">
-          <Tabs value={activeCategoryId || 'all'} onValueChange={(value) => setActiveCategoryId(value === 'all' ? null : value)} className="w-full">
-            <TabsList>
-              <TabsTrigger value="all">All</TabsTrigger>
-              {categories.map((category) => (
-                <TabsTrigger key={category.id} value={category.id}>
-                  {category.name}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
+        <ScrollArea className="w-full whitespace-nowrap">
+            <Tabs value={activeCategoryId || 'all'} onValueChange={(value) => setActiveCategoryId(value === 'all' ? null : value)} className="w-full">
+              <TabsList>
+                <TabsTrigger value="all">All</TabsTrigger>
+                {categories.map((category) => (
+                  <TabsTrigger key={category.id} value={category.id}>
+                    {category.name}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          <ScrollBar orientation="horizontal" />
         </ScrollArea>
         <Button variant="outline" size="sm" onClick={() => setIsManagerOpen(true)} className="flex-shrink-0">
           <ListPlus className="h-4 w-4" />

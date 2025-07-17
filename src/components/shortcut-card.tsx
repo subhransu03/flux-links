@@ -22,9 +22,10 @@ interface ShortcutCardProps {
   shortcut: Shortcut;
   onEdit: () => void;
   onDelete: () => void;
+  isDragging?: boolean;
 }
 
-export function ShortcutCard({ shortcut, onEdit, onDelete }: ShortcutCardProps) {
+export function ShortcutCard({ shortcut, onEdit, onDelete, isDragging = false }: ShortcutCardProps) {
   const getFaviconUrl = (url: string) => {
     try {
       const urlObject = new URL(url);
@@ -38,8 +39,8 @@ export function ShortcutCard({ shortcut, onEdit, onDelete }: ShortcutCardProps) 
   const iconSrc = shortcut.iconUrl || getFaviconUrl(shortcut.url);
 
   return (
-    <Card className="group relative overflow-hidden bg-card/80 backdrop-blur-sm border-border/60 hover:border-primary/50 transition-all duration-300 ease-in-out transform hover:-translate-y-1 shadow-lg hover:shadow-primary/20">
-      <a href={shortcut.url} target="_blank" rel="noopener noreferrer" className="block p-4">
+    <Card className={`group relative overflow-hidden bg-card/80 backdrop-blur-sm border-border/60 hover:border-primary/50 transition-all duration-300 ease-in-out transform hover:-translate-y-1 shadow-lg hover:shadow-primary/20 hover:animate-glow cursor-pointer ${isDragging ? 'border-primary border-2' : ''}`}>
+      <a href={shortcut.url} target="_blank" rel="noopener noreferrer" className="block p-4" draggable="false" onClick={(e) => { if(isDragging) e.preventDefault() }}>
         <CardContent className="flex flex-col items-center justify-center gap-4 text-center p-0">
           <div className="relative h-16 w-16 flex items-center justify-center rounded-lg bg-secondary/70 group-hover:bg-primary/20 transition-colors">
             <Image

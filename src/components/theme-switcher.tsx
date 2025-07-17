@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 const THEMES = [
+  { name: 'Oasis', class: 'theme-oasis' },
   { name: 'Nebula', class: 'theme-nebula' },
   { name: 'Cyber', class: 'theme-cyber' },
   { name: 'Sunset', class: 'theme-sunset' },
@@ -21,27 +22,32 @@ const THEMES = [
 export function ThemeSwitcher() {
   const { setTheme, theme } = useTheme();
   
-  const handleThemeChange = (newTheme: string) => {
+  const handleThemeChange = (newThemeClass: string) => {
     
     const body = document.body;
+    // Remove all theme classes
     THEMES.forEach(t => {
       if (t.class) body.classList.remove(t.class);
     });
 
-    if (newTheme) {
-      body.classList.add(newTheme);
+    // Add the new theme class
+    if (newThemeClass) {
+      body.classList.add(newThemeClass);
     }
     
     // We can store the custom theme choice in local storage
     // if we want it to persist across reloads.
-    localStorage.setItem('custom-theme', newTheme);
+    localStorage.setItem('custom-theme', newThemeClass);
   };
   
   React.useEffect(() => {
     // On mount, check if there's a custom theme in local storage
     const savedTheme = localStorage.getItem('custom-theme');
     if (savedTheme) {
-      handleThemeChange(savedTheme);
+        handleThemeChange(savedTheme);
+    } else {
+        // Set the default theme if none is saved
+        handleThemeChange('theme-oasis');
     }
   }, []);
 
