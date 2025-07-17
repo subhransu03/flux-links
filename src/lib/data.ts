@@ -18,9 +18,10 @@ export const ANIMATIONS: Animation[] = [
   { name: 'Off', value: 'off' },
   { name: 'Moving Gradient', value: 'gradient' },
   { name: 'Shooting Stars', value: 'stars' },
-  { name: 'Waving Lines', value: 'waves' },
   { name: 'Gentle Particles', value: 'particles' },
   { name: 'Subtle Grid', value: 'grid' },
+  { name: 'Floating Icons', value: 'icons' },
+  { name: 'Matrix Rain', value: 'matrix' },
 ];
 
 

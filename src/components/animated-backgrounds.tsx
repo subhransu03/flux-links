@@ -3,10 +3,13 @@
 
 import React, { useEffect, useState } from 'react';
 import type { Animation } from '@/lib/types';
+import { Github, Gitlab, Linkedin, Code, Bot, BrainCircuit, Database } from 'lucide-react';
 
 interface AnimatedBackgroundsProps {
   animation: Animation;
 }
+
+const ICONS = [Github, Gitlab, Linkedin, Code, Bot, BrainCircuit, Database];
 
 export const AnimatedBackgrounds = ({ animation }: AnimatedBackgroundsProps) => {
   const [isMounted, setIsMounted] = useState(false);
@@ -22,15 +25,16 @@ export const AnimatedBackgrounds = ({ animation }: AnimatedBackgroundsProps) => 
   const AnimationComponent = {
     'gradient': MovingGradientAnimation,
     'stars': ShootingStarsAnimation,
-    'waves': WavingLinesAnimation,
     'particles': GentleParticlesAnimation,
     'grid': SubtleGridAnimation,
+    'icons': FloatingIconsAnimation,
+    'matrix': MatrixRainAnimation,
   }[animation.value];
 
   return (
     <div className="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden bg-background">
       {AnimationComponent && <AnimationComponent />}
-      <div className="absolute top-0 left-0 w-full h-full bg-background/60" />
+      <div className="absolute top-0 left-0 w-full h-full bg-background/50" />
     </div>
   );
 };
@@ -54,7 +58,7 @@ const useParticles = (count: number) => {
 
 const MovingGradientAnimation = () => (
     <div className="relative w-full h-full">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary via-accent to-secondary animate-gradient-move opacity-60"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary via-accent to-secondary animate-gradient-move opacity-75"></div>
         <style jsx>{`
             @keyframes gradient-move {
                 0% { background-position: 0% 50%; }
@@ -70,7 +74,7 @@ const MovingGradientAnimation = () => (
 );
 
 const ShootingStarsAnimation = () => {
-    const stars = useParticles(20);
+    const stars = useParticles(25);
     return (
         <div className="w-full h-full overflow-hidden">
             {stars.map((star, i) => (
@@ -84,6 +88,7 @@ const ShootingStarsAnimation = () => {
                         height: `${star.size}px`,
                         animationDelay: `${Math.random() * 10}s`,
                         animationDuration: `${Math.random() * 2 + 1}s`,
+                        opacity: Math.random() * 0.5 + 0.5
                     }}
                 ></div>
             ))}
@@ -97,52 +102,14 @@ const ShootingStarsAnimation = () => {
     );
 };
 
-const WavingLinesAnimation = () => (
-    <div className="w-full h-full relative overflow-hidden">
-        <div className="wave"></div>
-        <div className="wave"></div>
-        <div className="wave"></div>
-        <style jsx>{`
-            .wave {
-                background: hsl(var(--primary) / 0.2);
-                border-radius: 1000% 1000% 0 0;
-                position: absolute;
-                width: 200%;
-                height: 12em;
-                animation: wave-move 15s ease-in-out infinite;
-                transform: translate3d(0, 0, 0);
-                opacity: 0.8;
-                bottom: 0;
-                left: 0;
-            }
-            .wave:nth-of-type(2) {
-                bottom: -1.25em;
-                animation: wave-move 18s cubic-bezier(0.55, 0.5, 0.45, 0.5) -1s infinite;
-                background: hsl(var(--accent) / 0.2);
-            }
-            .wave:nth-of-type(3) {
-                bottom: -2.5em;
-                animation: wave-move 20s cubic-bezier(0.55, 0.5, 0.45, 0.5) -2s infinite;
-                background: hsl(var(--secondary) / 0.2);
-            }
-            @keyframes wave-move {
-                0% { transform: translateX(-50%); }
-                50% { transform: translateX(0%); }
-                100% { transform: translateX(-50%); }
-            }
-        `}</style>
-    </div>
-);
-
-
 const GentleParticlesAnimation = () => {
-    const particles = useParticles(100);
+    const particles = useParticles(120);
     return (
         <div className="w-full h-full">
             {particles.map((p, i) => (
                 <div
                     key={i}
-                    className="absolute bg-primary/80 rounded-full"
+                    className="absolute bg-primary/90 rounded-full"
                     style={{
                         width: `${p.size}px`,
                         height: `${p.size}px`,
@@ -156,7 +123,7 @@ const GentleParticlesAnimation = () => {
             <style jsx>{`
                 @keyframes particle-drift {
                     from { transform: translate(0, 0) rotate(0deg); }
-                    50% { transform: translate(calc(var(--random-x) * 1px), calc(var(--random-y) * 1px)) rotate(180deg); opacity: 0.5; }
+                    50% { transform: translate(calc(var(--random-x) * 1px), calc(var(--random-y) * 1px)) rotate(180deg); opacity: 0.7; }
                     to { transform: translate(0, 0) rotate(360deg); }
                 }
 
@@ -179,15 +146,83 @@ const SubtleGridAnimation = () => (
                 background-image:
                     linear-gradient(to right, hsl(var(--border) / 1) 1px, transparent 1px),
                     linear-gradient(to bottom, hsl(var(--border) / 1) 1px, transparent 1px);
-                background-size: 60px 60px;
+                background-size: 50px 50px;
                 animation: pulse-grid 8s ease-in-out infinite;
             }
 
             @keyframes pulse-grid {
-                0% { opacity: 0.6; transform: scale(1); }
-                50% { opacity: 1; transform: scale(1.02); }
-                100% { opacity: 0.6; transform: scale(1); }
+                0% { opacity: 0.7; transform: scale(1); }
+                50% { opacity: 1; transform: scale(1.01); }
+                100% { opacity: 0.7; transform: scale(1); }
             }
         `}</style>
     </div>
 );
+
+
+const FloatingIconsAnimation = () => {
+  const icons = useParticles(30);
+  return (
+    <div className="w-full h-full">
+      {icons.map((icon, i) => {
+        const IconComponent = ICONS[i % ICONS.length];
+        return (
+          <div
+            key={i}
+            className="absolute text-primary/70"
+            style={{
+              left: icon.left,
+              top: icon.top,
+              animation: `particle-drift ${icon.animationDuration} linear infinite`,
+              animationDelay: icon.animationDelay,
+            }}
+          >
+            <IconComponent style={{ width: `${icon.size * 10}px`, height: `${icon.size * 10}px` }}/>
+          </div>
+        );
+      })}
+       <style jsx>{`
+            @keyframes particle-drift {
+                from { transform: translate(0, 0) rotate(0deg); }
+                50% { transform: translate(calc(var(--random-x) * 1px), calc(var(--random-y) * 1px)) rotate(180deg); opacity: 0.5; }
+                to { transform: translate(0, 0) rotate(360deg); }
+            }
+            div > div {
+                --random-x: ${Math.random() * 400 - 200};
+                --random-y: ${Math.random() * 400 - 200};
+            }
+        `}</style>
+    </div>
+  );
+};
+
+const MatrixRainAnimation = () => {
+    const drops = useParticles(50);
+    return (
+      <div className="w-full h-full overflow-hidden">
+        {drops.map((drop, i) => {
+           const IconComponent = ICONS[i % ICONS.length];
+           return (
+            <div
+                key={i}
+                className="absolute text-primary animate-matrix-fall"
+                style={{
+                    left: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 5}s`,
+                    animationDuration: `${Math.random() * 3 + 2}s`,
+                    fontSize: `${Math.random() * 16 + 10}px`,
+                }}
+            >
+                <IconComponent />
+            </div>
+           )
+        })}
+        <style jsx>{`
+            @keyframes matrix-fall {
+                from { transform: translateY(-10vh); opacity: 1; }
+                to { transform: translateY(110vh); opacity: 0.3; }
+            }
+        `}</style>
+      </div>
+    );
+};
