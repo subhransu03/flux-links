@@ -7,6 +7,10 @@ export const THEMES: Theme[] = [
     { name: 'Crimson', value: 'crimson' },
     { name: 'Forest', value: 'forest' },
     { name: 'Ocean', value: 'ocean' },
+    { name: 'Neumorphism', value: 'neumorphism' },
+    { name: 'Glassmorphism', value: 'glassmorphism' },
+    { name: 'Cyberpunk', value: 'cyberpunk' },
+    { name: 'Minimalist', value: 'minimalist' },
 ];
 
 export const DEFAULT_CATEGORIES: Category[] = [

@@ -39,7 +39,14 @@ export function ShortcutCard({ shortcut, onEdit, onDelete, isDragging = false }:
   const iconSrc = shortcut.iconUrl || getFaviconUrl(shortcut.url);
 
   return (
-    <Card className={`group relative overflow-hidden bg-card/80 backdrop-blur-sm border-border/60 hover:border-primary/50 transition-all duration-300 ease-in-out transform hover:-translate-y-1 shadow-lg hover:shadow-primary/20 hover:animate-glow cursor-pointer ${isDragging ? 'border-primary border-2' : ''}`}>
+    <Card className={`group relative overflow-hidden bg-card backdrop-blur-sm border-border/60 hover:border-primary/50 transition-all duration-300 ease-in-out transform hover:-translate-y-1 shadow-lg hover:shadow-primary/20 hover:animate-glow cursor-pointer 
+      ${isDragging ? 'border-primary border-2' : ''}
+      data-[theme=neumorphism]:shadow-[5px_5px_10px_#bcbcbc,-5px_-5px_10px_#ffffff]
+      dark:data-[theme=neumorphism]:shadow-[5px_5px_10px_#1a1a1a,-5px_-5px_10px_#2a2a2a]
+      data-[theme=glassmorphism]:bg-card/50 dark:data-[theme=glassmorphism]:bg-card/50
+      data-[theme=cyberpunk]:border-primary/50 data-[theme=cyberpunk]:hover:border-accent
+      `}
+    >
       <a href={shortcut.url} target="_blank" rel="noopener noreferrer" className="block p-4" draggable="false" onClick={(e) => { if(isDragging) e.preventDefault() }}>
         <CardContent className="flex flex-col items-center justify-center gap-4 text-center p-0">
           <div className="relative h-16 w-16 flex items-center justify-center rounded-lg bg-secondary/70 group-hover:bg-primary/20 transition-colors">
