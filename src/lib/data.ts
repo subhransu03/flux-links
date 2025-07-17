@@ -17,11 +17,10 @@ export const THEMES: Theme[] = [
 export const ANIMATIONS: Animation[] = [
   { name: 'Off', value: 'off' },
   { name: 'Moving Gradient', value: 'gradient' },
-  { name: 'Shooting Stars', value: 'stars' },
   { name: 'Gentle Particles', value: 'particles' },
-  { name: 'Subtle Grid', value: 'grid' },
-  { name: 'Floating Icons', value: 'icons' },
-  { name: 'Matrix Rain', value: 'matrix' },
+  { name: 'Interactive Spotlight', value: 'spotlight' },
+  { name: 'Moving Lines', value: 'lines' },
+  { name: 'Polka Dots', value: 'polka' },
 ];
 
 

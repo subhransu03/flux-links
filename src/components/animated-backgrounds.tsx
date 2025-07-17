@@ -3,41 +3,10 @@
 
 import React, { useEffect, useState } from 'react';
 import type { Animation } from '@/lib/types';
-import { Github, Gitlab, Linkedin, Code, Bot, BrainCircuit, Database } from 'lucide-react';
 
 interface AnimatedBackgroundsProps {
   animation: Animation;
 }
-
-const ICONS = [Github, Gitlab, Linkedin, Code, Bot, BrainCircuit, Database];
-
-export const AnimatedBackgrounds = ({ animation }: AnimatedBackgroundsProps) => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted || animation.value === 'off') {
-    return null;
-  }
-
-  const AnimationComponent = {
-    'gradient': MovingGradientAnimation,
-    'stars': ShootingStarsAnimation,
-    'particles': GentleParticlesAnimation,
-    'grid': SubtleGridAnimation,
-    'icons': FloatingIconsAnimation,
-    'matrix': MatrixRainAnimation,
-  }[animation.value];
-
-  return (
-    <div className="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden bg-background">
-      {AnimationComponent && <AnimationComponent />}
-      <div className="absolute top-0 left-0 w-full h-full bg-background/50" />
-    </div>
-  );
-};
 
 const useParticles = (count: number) => {
   const [particles, setParticles] = useState<any[]>([]);
@@ -58,6 +27,34 @@ const useParticles = (count: number) => {
   return particles;
 };
 
+export const AnimatedBackgrounds = ({ animation }: AnimatedBackgroundsProps) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted || animation.value === 'off') {
+    return null;
+  }
+
+  const AnimationComponent = {
+    'gradient': MovingGradientAnimation,
+    'particles': GentleParticlesAnimation,
+    'spotlight': InteractiveSpotlightAnimation,
+    'lines': MovingLinesAnimation,
+    'polka': PolkaDotAnimation,
+  }[animation.value];
+
+  return (
+    <div className="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden bg-background">
+      {AnimationComponent && <AnimationComponent />}
+      <div className="absolute top-0 left-0 w-full h-full bg-background/50" />
+    </div>
+  );
+};
+
+
 const MovingGradientAnimation = () => (
     <div className="relative w-full h-full">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary via-accent to-secondary animate-gradient-move opacity-75"></div>
@@ -74,40 +71,6 @@ const MovingGradientAnimation = () => (
         `}</style>
     </div>
 );
-
-const ShootingStarsAnimation = () => {
-    const stars = useParticles(30);
-    return (
-        <div className="w-full h-full overflow-hidden">
-            {stars.map((star, i) => (
-                <div
-                    key={i}
-                    className="absolute bg-primary rounded-full animate-star-fall"
-                    style={{
-                        top: '-10px',
-                        left: `${Math.random() * 100}%`,
-                        width: `${star.size}px`,
-                        height: `${star.size}px`,
-                        animationDelay: `${Math.random() * 10}s`,
-                        animationDuration: `${Math.random() * 2 + 1}s`,
-                    }}
-                ></div>
-            ))}
-            <style jsx>{`
-                @keyframes star-fall {
-                    from { transform: translateY(0) translateX(0) scale(1); opacity: 1; }
-                    to { transform: translateY(100vh) translateX(-100vw) scale(0.5); opacity: 0; }
-                }
-                .animate-star-fall {
-                    animation-name: star-fall;
-                    animation-timing-function: linear;
-                    animation-iteration-count: infinite;
-                    opacity: 0.9;
-                }
-            `}</style>
-        </div>
-    );
-};
 
 const GentleParticlesAnimation = () => {
     const particles = useParticles(150);
@@ -140,98 +103,80 @@ const GentleParticlesAnimation = () => {
     );
 };
 
-const SubtleGridAnimation = () => (
-    <div className="w-full h-full">
-        <div className="grid-bg"></div>
-        <style jsx>{`
-            .grid-bg {
-                width: 100%;
-                height: 100%;
-                background-image:
-                    linear-gradient(to right, hsl(var(--border) / 1) 1px, transparent 1px),
-                    linear-gradient(to bottom, hsl(var(--border) / 1) 1px, transparent 1px);
-                background-size: 50px 50px;
-                animation: pulse-grid 8s ease-in-out infinite;
-            }
+const InteractiveSpotlightAnimation = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-            @keyframes pulse-grid {
-                0% { opacity: 1; transform: scale(1); }
-                50% { opacity: 1; transform: scale(1.01); }
-                100% { opacity: 1; transform: scale(1); }
-            }
-        `}</style>
-    </div>
-);
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      setMousePosition({ x: event.clientX, y: event.clientY });
+    };
 
+    window.addEventListener('mousemove', handleMouseMove);
 
-const FloatingIconsAnimation = () => {
-  const icons = useParticles(35);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
   return (
-    <div className="w-full h-full">
-      {icons.map((icon, i) => {
-        const IconComponent = ICONS[i % ICONS.length];
-        return (
-          <div
-            key={i}
-            className="absolute text-primary/80"
-            style={{
-              left: icon.left,
-              top: icon.top,
-              animation: `particle-drift ${icon.animationDuration} linear infinite`,
-              animationDelay: icon.animationDelay,
-              '--random-x': `${icon.randomX}px`,
-              '--random-y': `${icon.randomY}px`,
-            } as React.CSSProperties}
-          >
-            <IconComponent style={{ width: `${icon.size * 10}px`, height: `${icon.size * 10}px` }}/>
-          </div>
-        );
-      })}
-       <style jsx>{`
-            @keyframes particle-drift {
-                from { transform: translate(0, 0) rotate(0deg); }
-                50% { transform: translate(var(--random-x), var(--random-y)) rotate(180deg); opacity: 0.6; }
-                to { transform: translate(0, 0) rotate(360deg); }
-            }
-        `}</style>
-    </div>
+    <div
+      className="w-full h-full"
+      style={{
+        background: `radial-gradient(600px at ${mousePosition.x}px ${mousePosition.y}px, hsl(var(--primary) / 0.15), transparent 80%)`,
+      }}
+    />
   );
 };
 
-const MatrixRainAnimation = () => {
-    const drops = useParticles(60);
-    return (
-      <div className="w-full h-full overflow-hidden">
-        {drops.map((drop, i) => {
-           const IconComponent = ICONS[i % ICONS.length];
-           return (
-            <div
-                key={i}
-                className="absolute text-primary animate-matrix-fall"
-                style={{
-                    left: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 5}s`,
-                    animationDuration: `${Math.random() * 3 + 2}s`,
-                    fontSize: `${Math.random() * 16 + 12}px`,
-                }}
-            >
-                <IconComponent />
-            </div>
-           )
-        })}
-        <style jsx>{`
-            @keyframes matrix-fall {
-                from { transform: translateY(-10vh); opacity: 1; }
-                to { transform: translateY(110vh); opacity: 0.8; }
-            }
-            .animate-matrix-fall {
-                animation-name: matrix-fall;
-                animation-timing-function: linear;
-                animation-iteration-count: infinite;
-            }
-        `}</style>
-      </div>
-    );
-};
+const MovingLinesAnimation = () => (
+  <div className="w-full h-full">
+    <div className="lines-bg"></div>
+    <style jsx>{`
+      .lines-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        background:
+          linear-gradient(45deg, hsl(var(--border) / 0.5) 25%, transparent 25%, transparent 75%, hsl(var(--border) / 0.5) 75%),
+          linear-gradient(45deg, hsl(var(--border) / 0.5) 25%, transparent 25%, transparent 75%, hsl(var(--border) / 0.5) 75%);
+        background-size: 60px 60px;
+        background-position: 0 0, 30px 30px;
+        animation: move-lines 4s linear infinite;
+      }
 
+      @keyframes move-lines {
+        0% {
+          background-position: 0 0, 30px 30px;
+        }
+        100% {
+          background-position: 60px 60px, 90px 90px;
+        }
+      }
+    `}</style>
+  </div>
+);
 
+const PolkaDotAnimation = () => (
+    <div className="w-full h-full">
+      <div className="polka-bg"></div>
+      <style jsx>{`
+        .polka-bg {
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(hsl(var(--primary) / 0.3) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: pulse-dots 10s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dots {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; transform: scale(1.02); }
+            100% { opacity: 0.5; }
+        }
+      `}</style>
+    </div>
+);
