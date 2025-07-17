@@ -7,7 +7,7 @@ body {
 }
 
 @layer base {
-  :root {
+  :root, [data-theme='default'] {
     --background: 225 16% 95%;
     --foreground: 222 84% 4.9%;
     --card: 225 16% 100%;
@@ -34,7 +34,7 @@ body {
     --chart-5: 27 87% 67%;
     --radius: 0.8rem;
   }
-  .dark {
+  .dark:root, .dark [data-theme='default'] {
     --background: 229 22% 19%; /* Dark Gray */
     --foreground: 210 40% 98%;
     --card: 229 22% 24%;
@@ -54,6 +54,44 @@ body {
     --border: 229 22% 30%;
     --input: 229 22% 30%;
     --ring: 292 84% 56%;
+  }
+
+  [data-theme='oasis'] {
+    --background: 210 20% 94%;
+    --foreground: 215 25% 27%;
+    --card: 210 20% 98%;
+    --primary: 158 44% 52%;
+    --accent: 45 93% 61%;
+    --border: 210 20% 88%;
+    --ring: 158 44% 52%;
+  }
+  .dark [data-theme='oasis'] {
+    --background: 215 28% 17%;
+    --foreground: 210 30% 96%;
+    --card: 215 25% 22%;
+    --primary: 158 44% 52%;
+    --accent: 45 93% 61%;
+    --border: 215 20% 28%;
+  }
+
+  [data-theme='synthwave'] {
+    --background: 260 40% 12%;
+    --foreground: 260 10% 85%;
+    --card: 260 40% 18%;
+    --primary: 325 90% 60%;
+    --accent: 180 90% 60%;
+    --border: 260 40% 30%;
+    --ring: 325 90% 60%;
+  }
+
+   .dark [data-theme='synthwave'] {
+    --background: 260 40% 12%;
+    --foreground: 260 10% 85%;
+    --card: 260 40% 18%;
+    --primary: 325 90% 60%;
+    --accent: 180 90% 60%;
+    --border: 260 40% 30%;
+    --ring: 325 90% 60%;
   }
 }
 
