@@ -15,10 +15,9 @@ export const THEMES: Theme[] = [
 
 export const ANIMATIONS: Animation[] = [
   { name: 'Off', value: 'off' },
-  { name: 'Floating Tech', value: 'floating-tech' },
-  { name: 'Floating UI', value: 'floating-ui' },
-  { name: 'Matrix', value: 'matrix' },
-  { name: 'Bubbles', value: 'bubbles' },
+  { name: 'Aurora', value: 'aurora' },
+  { name: 'Gentle Particles', value: 'particles' },
+  { name: 'Subtle Grid', value: 'grid' },
 ];
 
 

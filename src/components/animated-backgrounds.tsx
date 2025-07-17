@@ -3,7 +3,6 @@
 
 import React, { useEffect, useState } from 'react';
 import type { Animation } from '@/lib/types';
-import { AtSign, Bot, Code, FolderGit2, Gamepad2, GitBranch, Globe, Link2, LucideProps, PenTool, Puzzle } from 'lucide-react';
 
 interface AnimatedBackgroundsProps {
   animation: Animation;
@@ -21,16 +20,15 @@ export const AnimatedBackgrounds = ({ animation }: AnimatedBackgroundsProps) => 
   }
 
   const AnimationComponent = {
-    'floating-tech': FloatingTechAnimation,
-    'floating-ui': FloatingUIAnimation,
-    'matrix': MatrixAnimation,
-    'bubbles': BubblesAnimation,
+    'aurora': AuroraAnimation,
+    'particles': GentleParticlesAnimation,
+    'grid': SubtleGridAnimation,
   }[animation.value];
 
   return (
     <div className="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden bg-background">
       {AnimationComponent && <AnimationComponent />}
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-background via-background/50 to-background" />
+      <div className="absolute top-0 left-0 w-full h-full bg-background/50" />
     </div>
   );
 };
@@ -42,18 +40,9 @@ const useParticles = (count: number) => {
     const newParticles = Array.from({ length: count }).map(() => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`,
-      animationDuration: `${Math.random() * 40 + 20}s`,
-      animationDelay: `${Math.random() * -60}s`,
-      size: Math.random() * 40 + 20,
-      translateX1: Math.random() * 200 - 100,
-      translateY1: Math.random() * 200 - 100,
-      rotate1: Math.random() * 90,
-      translateX2: Math.random() * 200 - 100,
-      translateY2: Math.random() * 200 - 100,
-      rotate2: Math.random() * 180,
-      translateX3: Math.random() * 200 - 100,
-      translateY3: Math.random() * 200 - 100,
-      rotate3: Math.random() * 270,
+      animationDuration: `${Math.random() * 50 + 50}s`,
+      animationDelay: `-${Math.random() * 100}s`,
+      size: Math.random() * 2 + 1,
     }));
     setParticles(newParticles);
   }, [count]);
@@ -61,139 +50,102 @@ const useParticles = (count: number) => {
   return particles;
 };
 
-
-const FloatingTechAnimation = () => {
-  const icons: React.FC<LucideProps>[] = [Code, GitBranch, Bot, Puzzle, Link2, FolderGit2, AtSign, Globe, Gamepad2, PenTool];
-  const particles = useParticles(30);
-
-  return (
-    <>
-      {particles.map((p, i) => {
-        const Icon = icons[i % icons.length];
-        const style = {
-          left: p.left,
-          top: p.top,
-          animation: `drift-${i} ${p.animationDuration} linear infinite`,
-          animationDelay: p.animationDelay,
-        };
-        return (
-          <React.Fragment key={i}>
-            <div
-              className="absolute text-primary/20"
-              style={style}
-            >
-              <Icon size={p.size} strokeWidth={1} />
-            </div>
-            <style>{`
-              @keyframes drift-${i} {
-                0% { transform: translate(0, 0) rotate(0deg); }
-                25% { transform: translate(${p.translateX1}px, ${p.translateY1}px) rotate(${p.rotate1}deg); }
-                50% { transform: translate(${p.translateX2}px, ${p.translateY2}px) rotate(${p.rotate2}deg); }
-                75% { transform: translate(${p.translateX3}px, ${p.translateY3}px) rotate(${p.rotate3}deg); }
-                100% { transform: translate(0, 0) rotate(360deg); }
-              }
-            `}</style>
-          </React.Fragment>
-        );
-      })}
-    </>
-  );
-};
-
-const FloatingUIAnimation = () => {
-    const particles = useParticles(40);
-    return (
-      <>
-        {particles.map((p, i) => (
-          <div
-            key={i}
-            className="absolute bg-primary/10 backdrop-blur-sm"
-            style={{
-              width: `${p.size}px`,
-              height: `${p.size}px`,
-              left: p.left,
-              top: p.top,
-              borderRadius: `${Math.random() * 50 + 10}%`,
-              animation: `float-ui ${Math.random() * 30 + 15}s ease-in-out infinite`,
-              animationDelay: `${Math.random() * -45}s`,
-            }}
-          />
-        ))}
+const AuroraAnimation = () => (
+    <div className="relative w-full h-full opacity-50">
+        <div className="aurora__item"></div>
+        <div className="aurora__item"></div>
+        <div className="aurora__item"></div>
+        <div className="aurora__item"></div>
         <style jsx>{`
-          @keyframes float-ui {
-            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-            50% { opacity: 0.7; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-          }
-        `}</style>
-      </>
-    );
-  };
+            .aurora__item {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 140vmax;
+                height: 140vmax;
+                border-radius: 9999px;
+                mix-blend-mode: screen;
+                animation: aurora-move 12s infinite linear;
+                filter: blur(80px);
+            }
+            .aurora__item:nth-of-type(1) {
+                background: hsl(var(--primary) / 0.2);
+                animation-duration: 12s;
+            }
+            .aurora__item:nth-of-type(2) {
+                background: hsl(var(--accent) / 0.2);
+                animation-duration: 15s;
+            }
+            .aurora__item:nth-of-type(3) {
+                background: hsl(var(--secondary) / 0.2);
+                animation-duration: 18s;
+            }
+             .aurora__item:nth-of-type(4) {
+                background: hsl(var(--foreground) / 0.1);
+                animation-duration: 21s;
+            }
 
-const MatrixAnimation = () => {
-    const icons: React.FC<LucideProps>[] = [Code, GitBranch, Link2, AtSign, Puzzle];
-    const columns = useParticles(50);
-    return (
-      <div className="flex justify-between">
-        {columns.map((p, i) => (
-          <div
-            key={i}
-            className="flex flex-col"
-            style={{
-              animation: `fall ${Math.random() * 10 + 5}s linear infinite`,
-              animationDelay: `${Math.random() * -15}s`,
-            }}
-          >
-            {Array.from({ length: 30 }).map((_, j) => {
-                const Icon = icons[Math.floor(Math.random() * icons.length)];
-                return <Icon key={j} className="text-primary/70 my-2" size={20} strokeWidth={1.5}/>
-            })}
-          </div>
-        ))}
-        <style jsx>{`
-            @keyframes fall {
-                from { transform: translateY(-100vh); }
-                to { transform: translateY(100vh); }
+            @keyframes aurora-move {
+                0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+                50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.2); }
+                100% { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
             }
         `}</style>
-      </div>
-    );
-  };
+    </div>
+);
 
-const BubblesAnimation = () => {
-    const particles = useParticles(50);
+const GentleParticlesAnimation = () => {
+    const particles = useParticles(100);
     return (
-      <>
-        {particles.map((p, i) => (
-           <React.Fragment key={i}>
-            <div
-              className="absolute bg-primary/20 rounded-full"
-              style={{
-                width: `${p.size}px`,
-                height: `${p.size}px`,
-                left: p.left,
-                bottom: '-50px',
-                animation: `bubble-rise-${i} ${Math.random() * 20 + 10}s linear infinite`,
-                animationDelay: `${p.animationDelay}`,
-              }}
-            />
-             <style>{`
-              @keyframes bubble-rise-${i} {
-                0% {
-                  transform: translateY(0) translateX(0);
-                  opacity: 1;
+        <div className="w-full h-full">
+            {particles.map((p, i) => (
+                <div
+                    key={i}
+                    className="absolute bg-primary/40 rounded-full"
+                    style={{
+                        width: `${p.size}px`,
+                        height: `${p.size}px`,
+                        left: p.left,
+                        top: p.top,
+                        animation: `particle-drift ${p.animationDuration} linear infinite`,
+                        animationDelay: p.animationDelay,
+                    }}
+                />
+            ))}
+            <style jsx>{`
+                @keyframes particle-drift {
+                    from { transform: translate(0, 0); }
+                    to { transform: translate(calc(var(--random-x) * 1px), calc(var(--random-y) * 1px)); }
                 }
-                50% {
-                    transform: translateX(${p.translateX1}px);
+
+                div > div {
+                    --random-x: ${Math.random() * 400 - 200};
+                    --random-y: ${Math.random() * 400 - 200};
                 }
-                100% {
-                  transform: translateY(-120vh) translateX(${p.translateX2}px);
-                  opacity: 0;
-                }
-              }
             `}</style>
-          </React.Fragment>
-        ))}
-      </>
+        </div>
     );
 };
+
+const SubtleGridAnimation = () => (
+    <div className="w-full h-full">
+        <div className="grid-bg"></div>
+        <style jsx>{`
+            .grid-bg {
+                width: 100%;
+                height: 100%;
+                background-image:
+                    linear-gradient(to right, hsl(var(--border) / 0.5) 1px, transparent 1px),
+                    linear-gradient(to bottom, hsl(var(--border) / 0.5) 1px, transparent 1px);
+                background-size: 50px 50px;
+                animation: pulse-grid 10s ease-in-out infinite;
+            }
+
+            @keyframes pulse-grid {
+                0% { opacity: 0.2; }
+                50% { opacity: 0.5; }
+                100% { opacity: 0.2; }
+            }
+        `}</style>
+    </div>
+);
