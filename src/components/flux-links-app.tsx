@@ -48,15 +48,11 @@ export function FluxLinksApp() {
     if (editingShortcut) {
       setShortcuts(prev => prev.map(s => (s.id === shortcut.id ? shortcut : s)));
     } else {
-      setShortcuts(prev => [...prev, { ...shortcut, clickCount: 0 }]);
+      setShortcuts(prev => [...prev, shortcut]);
     }
     setEditingShortcut(null);
   };
   
-  const handleShortcutClick = (shortcutId: string) => {
-    setShortcuts(prev => prev.map(s => s.id === shortcutId ? { ...s, clickCount: (s.clickCount || 0) + 1 } : s));
-  };
-
   const handleDeleteShortcut = (id: string) => {
     setShortcuts(prev => prev.filter(s => s.id !== id));
   };
@@ -171,7 +167,6 @@ export function FluxLinksApp() {
                   shortcut={shortcut}
                   onEdit={() => handleEditShortcut(shortcut)}
                   onDelete={() => handleDeleteShortcut(shortcut.id)}
-                  onClick={() => handleShortcutClick(shortcut.id)}
                   isDragging={draggedItem?.id === shortcut.id}
                 />
               </div>

@@ -5,7 +5,6 @@ export interface Shortcut {
   url: string;
   categoryId: string;
   iconUrl?: string;
-  clickCount?: number;
 }
 
 export interface Category {
