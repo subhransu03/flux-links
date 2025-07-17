@@ -2,16 +2,14 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { useLocalStorage } from '@/hooks/use-local-storage';
-import type { Category, Shortcut } from '@/lib/types';
-import { DEFAULT_CATEGORIES, DEFAULT_SHORTCUTS } from '@/lib/data';
+import type { Category, Shortcut, Theme } from '@/lib/types';
+import { DEFAULT_CATEGORIES, DEFAULT_SHORTCUTS, THEMES } from '@/lib/data';
 import { AppHeader } from '@/components/header';
 import { CategoryTabs } from '@/components/category-tabs';
 import { ShortcutCard } from '@/components/shortcut-card';
 import { ShortcutDialog } from '@/components/shortcut-dialog';
 import { Button } from './ui/button';
 import { PlusCircle } from 'lucide-react';
-
-const themes = ['default', 'oasis', 'synthwave'];
 
 export function FluxLinksApp() {
   const [shortcuts, setShortcuts] = useLocalStorage<Shortcut[]>('shortcuts-v4', DEFAULT_SHORTCUTS);
@@ -22,7 +20,7 @@ export function FluxLinksApp() {
   const [editingShortcut, setEditingShortcut] = useState<Shortcut | null>(null);
   const [isShortcutDialogOpen, setIsShortcutDialogOpen] = useState(false);
   const [draggedItem, setDraggedItem] = useState<Shortcut | null>(null);
-  const [theme, setTheme] = useState(themes[0]);
+  const [theme, setTheme] = useState<Theme>(THEMES[0]);
   
   const [visibleShortcuts, setVisibleShortcuts] = useState<Shortcut[]>([]);
 
@@ -41,12 +39,6 @@ export function FluxLinksApp() {
     return () => clearTimeout(timer);
   }, [filteredShortcuts]);
   
-  const cycleTheme = () => {
-    const currentIndex = themes.indexOf(theme);
-    const nextIndex = (currentIndex + 1) % themes.length;
-    setTheme(themes[nextIndex]);
-  };
-
   const handleSaveShortcut = (shortcut: Shortcut) => {
     if (editingShortcut) {
       setShortcuts(prev => prev.map(s => (s.id === shortcut.id ? shortcut : s)));
@@ -105,12 +97,13 @@ export function FluxLinksApp() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8" data-theme={theme}>
+    <div className="container mx-auto px-4 py-8" data-theme={theme.value}>
       <AppHeader
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         onAddNew={openNewShortcutDialog}
-        onCycleTheme={cycleTheme}
+        themes={THEMES}
+        setTheme={setTheme}
       />
 
       <CategoryTabs

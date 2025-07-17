@@ -1,4 +1,13 @@
-import type { Category, Shortcut } from './types';
+import type { Category, Shortcut, Theme } from './types';
+
+export const THEMES: Theme[] = [
+    { name: 'Default', value: 'default' },
+    { name: 'Oasis', value: 'oasis' },
+    { name: 'Synthwave', value: 'synthwave' },
+    { name: 'Crimson', value: 'crimson' },
+    { name: 'Forest', value: 'forest' },
+    { name: 'Ocean', value: 'ocean' },
+];
 
 export const DEFAULT_CATEGORIES: Category[] = [
   { id: 'cat-1', name: 'Job Portals' },
