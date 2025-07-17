@@ -19,7 +19,6 @@ export const ANIMATIONS: Animation[] = [
   { name: 'Floating UI', value: 'floating-ui' },
   { name: 'Matrix', value: 'matrix' },
   { name: 'Bubbles', value: 'bubbles' },
-  // { name: 'Constellation', value: 'constellation' }, // Canvas-based, more complex
 ];
 
 
