@@ -51,7 +51,7 @@ const useParticles = (count: number) => {
 };
 
 const AuroraAnimation = () => (
-    <div className="relative w-full h-full opacity-50">
+    <div className="relative w-full h-full opacity-70">
         <div className="aurora__item"></div>
         <div className="aurora__item"></div>
         <div className="aurora__item"></div>
@@ -69,19 +69,19 @@ const AuroraAnimation = () => (
                 filter: blur(80px);
             }
             .aurora__item:nth-of-type(1) {
-                background: hsl(var(--primary) / 0.2);
+                background: hsl(var(--primary) / 0.4);
                 animation-duration: 12s;
             }
             .aurora__item:nth-of-type(2) {
-                background: hsl(var(--accent) / 0.2);
+                background: hsl(var(--accent) / 0.4);
                 animation-duration: 15s;
             }
             .aurora__item:nth-of-type(3) {
-                background: hsl(var(--secondary) / 0.2);
+                background: hsl(var(--secondary) / 0.4);
                 animation-duration: 18s;
             }
              .aurora__item:nth-of-type(4) {
-                background: hsl(var(--foreground) / 0.1);
+                background: hsl(var(--foreground) / 0.2);
                 animation-duration: 21s;
             }
 
@@ -101,7 +101,7 @@ const GentleParticlesAnimation = () => {
             {particles.map((p, i) => (
                 <div
                     key={i}
-                    className="absolute bg-primary/40 rounded-full"
+                    className="absolute bg-primary/70 rounded-full"
                     style={{
                         width: `${p.size}px`,
                         height: `${p.size}px`,
@@ -135,16 +135,16 @@ const SubtleGridAnimation = () => (
                 width: 100%;
                 height: 100%;
                 background-image:
-                    linear-gradient(to right, hsl(var(--border) / 0.5) 1px, transparent 1px),
-                    linear-gradient(to bottom, hsl(var(--border) / 0.5) 1px, transparent 1px);
+                    linear-gradient(to right, hsl(var(--border) / 0.8) 1px, transparent 1px),
+                    linear-gradient(to bottom, hsl(var(--border) / 0.8) 1px, transparent 1px);
                 background-size: 50px 50px;
                 animation: pulse-grid 10s ease-in-out infinite;
             }
 
             @keyframes pulse-grid {
-                0% { opacity: 0.2; }
-                50% { opacity: 0.5; }
-                100% { opacity: 0.2; }
+                0% { opacity: 0.4; }
+                50% { opacity: 0.8; }
+                100% { opacity: 0.4; }
             }
         `}</style>
     </div>
