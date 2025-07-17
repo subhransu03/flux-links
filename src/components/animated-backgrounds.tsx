@@ -76,7 +76,7 @@ const MovingGradientAnimation = () => (
 );
 
 const ShootingStarsAnimation = () => {
-    const stars = useParticles(25);
+    const stars = useParticles(30);
     return (
         <div className="w-full h-full overflow-hidden">
             {stars.map((star, i) => (
@@ -90,7 +90,7 @@ const ShootingStarsAnimation = () => {
                         height: `${star.size}px`,
                         animationDelay: `${Math.random() * 10}s`,
                         animationDuration: `${Math.random() * 2 + 1}s`,
-                        opacity: Math.random() * 0.7 + 0.5
+                        opacity: Math.random() * 0.8 + 0.6
                     }}
                 ></div>
             ))}
@@ -99,13 +99,18 @@ const ShootingStarsAnimation = () => {
                     from { transform: translateY(0) translateX(0) scale(1); opacity: 1; }
                     to { transform: translateY(100vh) translateX(-100vw) scale(0.5); opacity: 0; }
                 }
+                .animate-star-fall {
+                  animation-name: star-fall;
+                  animation-timing-function: linear;
+                  animation-iteration-count: infinite;
+                }
             `}</style>
         </div>
     );
 };
 
 const GentleParticlesAnimation = () => {
-    const particles = useParticles(120);
+    const particles = useParticles(150);
     return (
         <div className="w-full h-full">
             {particles.map((p, i) => (
@@ -127,7 +132,7 @@ const GentleParticlesAnimation = () => {
             <style jsx>{`
                 @keyframes particle-drift {
                     from { transform: translate(0, 0) rotate(0deg); }
-                    50% { transform: translate(var(--random-x), var(--random-y)) rotate(180deg); opacity: 0.7; }
+                    50% { transform: translate(var(--random-x), var(--random-y)) rotate(180deg); opacity: 0.8; }
                     to { transform: translate(0, 0) rotate(360deg); }
                 }
             `}</style>
@@ -150,9 +155,9 @@ const SubtleGridAnimation = () => (
             }
 
             @keyframes pulse-grid {
-                0% { opacity: 0.7; transform: scale(1); }
+                0% { opacity: 0.8; transform: scale(1); }
                 50% { opacity: 1; transform: scale(1.01); }
-                100% { opacity: 0.7; transform: scale(1); }
+                100% { opacity: 0.8; transform: scale(1); }
             }
         `}</style>
     </div>
@@ -160,7 +165,7 @@ const SubtleGridAnimation = () => (
 
 
 const FloatingIconsAnimation = () => {
-  const icons = useParticles(30);
+  const icons = useParticles(35);
   return (
     <div className="w-full h-full">
       {icons.map((icon, i) => {
@@ -168,7 +173,7 @@ const FloatingIconsAnimation = () => {
         return (
           <div
             key={i}
-            className="absolute text-primary/70"
+            className="absolute text-primary/80"
             style={{
               left: icon.left,
               top: icon.top,
@@ -185,7 +190,7 @@ const FloatingIconsAnimation = () => {
        <style jsx>{`
             @keyframes particle-drift {
                 from { transform: translate(0, 0) rotate(0deg); }
-                50% { transform: translate(var(--random-x), var(--random-y)) rotate(180deg); opacity: 0.5; }
+                50% { transform: translate(var(--random-x), var(--random-y)) rotate(180deg); opacity: 0.6; }
                 to { transform: translate(0, 0) rotate(360deg); }
             }
         `}</style>
@@ -194,7 +199,7 @@ const FloatingIconsAnimation = () => {
 };
 
 const MatrixRainAnimation = () => {
-    const drops = useParticles(50);
+    const drops = useParticles(60);
     return (
       <div className="w-full h-full overflow-hidden">
         {drops.map((drop, i) => {
@@ -207,7 +212,7 @@ const MatrixRainAnimation = () => {
                     left: `${Math.random() * 100}%`,
                     animationDelay: `${Math.random() * 5}s`,
                     animationDuration: `${Math.random() * 3 + 2}s`,
-                    fontSize: `${Math.random() * 16 + 10}px`,
+                    fontSize: `${Math.random() * 16 + 12}px`,
                 }}
             >
                 <IconComponent />
@@ -217,7 +222,12 @@ const MatrixRainAnimation = () => {
         <style jsx>{`
             @keyframes matrix-fall {
                 from { transform: translateY(-10vh); opacity: 1; }
-                to { transform: translateY(110vh); opacity: 0.3; }
+                to { transform: translateY(110vh); opacity: 0.4; }
+            }
+            .animate-matrix-fall {
+                animation-name: matrix-fall;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
             }
         `}</style>
       </div>
