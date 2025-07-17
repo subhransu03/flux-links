@@ -90,7 +90,7 @@ const ShootingStarsAnimation = () => {
                         height: `${star.size}px`,
                         animationDelay: `${Math.random() * 10}s`,
                         animationDuration: `${Math.random() * 2 + 1}s`,
-                        opacity: Math.random() * 0.8 + 0.6
+                        opacity: Math.random() * 0.8 + 0.8
                     }}
                 ></div>
             ))}
@@ -155,9 +155,9 @@ const SubtleGridAnimation = () => (
             }
 
             @keyframes pulse-grid {
-                0% { opacity: 0.8; transform: scale(1); }
+                0% { opacity: 1; transform: scale(1); }
                 50% { opacity: 1; transform: scale(1.01); }
-                100% { opacity: 0.8; transform: scale(1); }
+                100% { opacity: 1; transform: scale(1); }
             }
         `}</style>
     </div>
@@ -222,7 +222,7 @@ const MatrixRainAnimation = () => {
         <style jsx>{`
             @keyframes matrix-fall {
                 from { transform: translateY(-10vh); opacity: 1; }
-                to { transform: translateY(110vh); opacity: 0.4; }
+                to { transform: translateY(110vh); opacity: 0.8; }
             }
             .animate-matrix-fall {
                 animation-name: matrix-fall;
@@ -233,3 +233,4 @@ const MatrixRainAnimation = () => {
       </div>
     );
 };
+
