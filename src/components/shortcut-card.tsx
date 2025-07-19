@@ -55,13 +55,13 @@ export function ShortcutCard({ shortcut, onEdit, onDelete, isDragging = false }:
         draggable="false" 
       >
         <CardContent className="flex flex-col items-center justify-center gap-4 text-center p-0 h-full">
-          <div className="relative h-12 w-12 sm:h-16 sm:w-16 flex items-center justify-center rounded-lg bg-secondary/70 group-hover/card:bg-primary/20 transition-colors">
+          <div className="relative h-16 w-16 sm:h-20 sm:w-20 flex items-center justify-center rounded-lg bg-secondary/70 group-hover/card:bg-primary/20 transition-colors">
             <Image
               src={iconSrc}
               alt={`${shortcut.name} icon`}
-              width={40}
-              height={40}
-              className="rounded-md transition-transform duration-300 group-hover/card:scale-110 object-contain w-8 h-8 sm:w-10 sm:h-10"
+              width={64}
+              height={64}
+              className="rounded-md transition-transform duration-300 group-hover/card:scale-110 object-contain w-10 h-10 sm:w-12 sm:h-12"
               unoptimized
             />
           </div>
