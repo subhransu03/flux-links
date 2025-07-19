@@ -51,17 +51,17 @@ export function ShortcutCard({ shortcut, onEdit, onDelete, isDragging = false }:
         href={shortcut.url} 
         target="_blank" 
         rel="noopener noreferrer" 
-        className="block p-4 h-full cursor-pointer" 
+        className="block p-3 h-full cursor-pointer" 
         draggable="false" 
       >
         <CardContent className="flex flex-col items-center justify-center gap-4 text-center p-0 h-full">
-          <div className="relative h-16 w-16 sm:h-20 sm:w-20 flex items-center justify-center rounded-lg bg-secondary/70 group-hover/card:bg-primary/20 transition-colors">
+          <div className="relative h-20 w-20 flex items-center justify-center rounded-lg bg-secondary/70 group-hover/card:bg-primary/20 transition-colors">
             <Image
               src={iconSrc}
               alt={`${shortcut.name} icon`}
               width={64}
               height={64}
-              className="rounded-md transition-transform duration-300 group-hover/card:scale-110 object-contain w-10 h-10 sm:w-12 sm:h-12"
+              className="rounded-md transition-transform duration-300 group-hover/card:scale-110 object-contain w-12 h-12"
               unoptimized
             />
           </div>
